@@ -1,7 +1,7 @@
 language: java
 script:
  - mvn test
- - checklist::checklist
+ - checklist:checklist
  
 after_success:
  - bash <(curl -s https://codecov.io/bash)
