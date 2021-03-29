@@ -104,4 +104,68 @@ public class InvoiceTest {
     public void testInvoiceWithNegativeQuantity() {
         invoice.addProduct(new DairyProduct("Zsiadle mleko", new BigDecimal("5.55")), -1);
     }
+    
+    @Test
+    public void testInvoiceHasNumber() {
+    	
+    	int number = invoice.getInvoiceNumber();
+    	Assert.assertTrue(number >0);
+    }
+    @Test
+    public void testTwoInvoicesHaveDifferentNumbers() {
+    	
+    	int number = invoice.getInvoiceNumber();
+    	int number2 = new Invoice().getInvoiceNumber();
+    	Assert.assertNotEquals(number, number2);
+    }
+    
+    @Test
+    public void testTheSameInvoiceHasTheSameNumber() {
+    	
+    	int number = invoice.getInvoiceNumber();
+    	Assert.assertEquals(number, number);
+    	
+    }
+    
+    @Test
+    public void testNextInvoicePlusOne() {
+    	
+    	int number = invoice.getInvoiceNumber();
+    	int number2 = new Invoice().getInvoiceNumber();
+    	Assert.assertTrue((number2 - number) == 1);
+    }
+    
+    @Test
+    public void testAddingTheSameProductOnePieceTwice() {
+    	
+    	Product product1 = new OtherProduct("Szklanka", new BigDecimal("5"));
+    	invoice.addProduct(product1);
+    	invoice.addProduct(product1);
+    	Assert.assertThat(2, Matchers.comparesEqualTo(invoice.getProductList().get(product1)));
+    	
+    }
+    @Test
+    public void testAddingTheSameProductTwoToThree() {
+    	
+    	Product product1 = new OtherProduct("Szklanka", new BigDecimal("5"));
+    	invoice.addProduct(product1, 2);
+    	invoice.addProduct(product1, 3);
+    	Assert.assertThat(5, Matchers.comparesEqualTo(invoice.getProductList().get(product1)));
+    	
+    }
+    @Test
+    public void testAddingTheSameProductsTwoToTwo() {
+    	
+    	Product product1 = new OtherProduct("Szklanka", new BigDecimal("5"));
+    	Product product2 = new OtherProduct("Kieliszek", new BigDecimal("10"));
+    	invoice.addProduct(product1, 2);
+    	invoice.addProduct(product1, 2);
+    	invoice.addProduct(product2, 2);
+    	invoice.addProduct(product2, 2);
+    	Assert.assertThat(4, Matchers.comparesEqualTo(invoice.getProductList().get(product1)));
+    	Assert.assertThat(4, Matchers.comparesEqualTo(invoice.getProductList().get(product2)));
+    }
+    
+    
+    
 }
