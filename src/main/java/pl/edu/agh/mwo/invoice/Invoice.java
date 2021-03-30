@@ -3,8 +3,6 @@ package pl.edu.agh.mwo.invoice;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Stream;
 
 import pl.edu.agh.mwo.invoice.product.Product;
 
@@ -15,10 +13,13 @@ public class Invoice {
 	private static int invoicesCounter = 0;
 
 	private final int invoiceNumber;
+	
+	private int productCounter;
 
 	public Invoice() {
 
 		invoiceNumber = ++invoicesCounter;
+		productCounter = 0;
 	}
 
 	public void addProduct(Product product) {
@@ -52,9 +53,9 @@ public class Invoice {
 
 		boolean result = false;
 
-		for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+		for (Product entry : products.keySet()) {
 
-			if (entry.getKey().getName().equals(product.getName())) {
+			if (entry.getName().equals(product.getName())) {
 
 				result = true;
 
@@ -91,6 +92,10 @@ public class Invoice {
 
 		return invoiceNumber;
 
+	}	
+
+	public int getProductCounter() {
+		return productCounter;
 	}
 
 	public Map<Product, Integer> getProductList() {
@@ -100,31 +105,20 @@ public class Invoice {
 
 	public void printInvoice() {
 
-		System.out.printf("%35s %5d", "Numer faktury:", invoiceNumber);
-		System.out.println();
-		System.out.println();
-		System.out.printf("%15s %20s %20s %20s", "Numer kolejny", "Nazwa pozycji", "Sztuk", "Cena jednostkowa");
-		System.out.println();
+		System.out.printf("%35s %5d\n", "Numer faktury:", invoiceNumber);
+		System.out.printf("%15s %20s %20s %20s\n", "Numer kolejny", "Nazwa pozycji", "Sztuk", "Cena jednostkowa");
 		getProductListForPrinting();
-
+		System.out.printf("%55s %20d", "Liczba pozycji na fakturze", productCounter);
 	}
 
 	private void getProductListForPrinting() {
 
-		int invoicePosition = 1;
-		int productCounter = 0;
-		for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+		for (Product entry : products.keySet()) {
 
-			System.out.printf("%15d %20s %20d %20.2f", invoicePosition, entry.getKey().getName(), entry.getValue(),
-					entry.getKey().getPrice());
-			System.out.println();
-			productCounter++;
-			invoicePosition++;
+			System.out.printf("%15d %20s %20d %20.2f\n", ++productCounter, entry.getName(), products.get(entry), entry.getPrice());
+	
 		}
-
-		System.out.println();
-		System.out.println();
-		System.out.printf("%55s %20d", "Liczba pozycji na fakturze", productCounter);
+	
 	}
 
 }

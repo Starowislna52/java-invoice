@@ -165,6 +165,25 @@ public class InvoiceTest {
     	Assert.assertThat(4, Matchers.comparesEqualTo(invoice.getProductList().get(product1)));
     	Assert.assertThat(4, Matchers.comparesEqualTo(invoice.getProductList().get(product2)));
     }
+    @Test
+    public void positionNuberOnInvoiceTheSameAsNumberOfLines_One() {
+    	
+    	Product product1 = new OtherProduct("Szklanka", new BigDecimal("5"));
+    	invoice.addProduct(product1, 2);
+    	invoice.printInvoice();
+    	Assert.assertThat(1, Matchers.comparesEqualTo(invoice.getProductCounter()));
+    }
+    @Test
+    public void positionNuberOnInvoiceTheSameAsNumberOfLines_Two() {
+    	
+    	Product product1 = new OtherProduct("Szklanka", new BigDecimal("5"));
+    	invoice.addProduct(product1, 2);
+    	Product product2 = new OtherProduct("Kieliszek", new BigDecimal("10"));
+    	invoice.addProduct(product1, 2);
+    	invoice.addProduct(product2, 2);
+    	invoice.printInvoice();
+    	Assert.assertThat(2, Matchers.comparesEqualTo(invoice.getProductCounter()));
+    }
     
     
     
